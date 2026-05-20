@@ -9,7 +9,10 @@ import mlflow.sklearn
 import dagshub
 import os
 from src.logger import logging
-from src.constants import DAGS_HUB_TRACKING_URI, DAGS_HUB_REPO_NAME, DAGS_HUB_REPO_OWNER_NAME
+from src.constants import DAGS_HUB_TRACKING_URI, DAGS_HUB_REPO_NAME, DAGS_HUB_REPO_OWNER_NAME, MLFLOW_TRACKING_USERNAME, MLFLOW_TRACKING_PASSWORD
+
+os.environ["MLFLOW_TRACKING_USERNAME"] = MLFLOW_TRACKING_USERNAME
+os.environ["MLFLOW_TRACKING_PASSWORD"] = MLFLOW_TRACKING_PASSWORD
 
 
 # Below code block is for production use
