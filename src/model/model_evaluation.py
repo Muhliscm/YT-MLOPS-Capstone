@@ -9,19 +9,19 @@ import mlflow.sklearn
 import dagshub
 import os
 from src.logger import logging
-from src.constants import DAGS_HUB_TRACKING_URI, DAGS_HUB_REPO_NAME, DAGS_HUB_REPO_OWNER_NAME
+from src.constants import DAGS_HUB_TRACKING_URI, DAGS_HUB_REPO_NAME, DAGS_HUB_REPO_OWNER_NAME,DAGS_HUB_TOKEN
 
 
 
 # Below code block is for production use
 # -------------------------------------------------------------------------------------
 # Set up DagsHub credentials for MLflow tracking
-dagshub_token = os.getenv("CAPSTONE_TEST")
-if not dagshub_token:
+
+if not DAGS_HUB_TOKEN:
     raise EnvironmentError("CAPSTONE_TEST environment variable is not set")
 
-os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
-os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
+os.environ["MLFLOW_TRACKING_USERNAME"] = DAGS_HUB_TOKEN
+os.environ["MLFLOW_TRACKING_PASSWORD"] = DAGS_HUB_TOKEN
 
 # Set up MLflow tracking URI
 mlflow.set_tracking_uri(f'{DAGS_HUB_TRACKING_URI}/{DAGS_HUB_REPO_OWNER_NAME}/{DAGS_HUB_REPO_NAME}.mlflow')
