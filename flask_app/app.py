@@ -45,12 +45,12 @@ def removing_punctuations(text):
     """Remove punctuations from the text."""
     text = re.sub('[%s]' % re.escape(string.punctuation), ' ', text)
     text = text.replace('؛', "")
-    text = re.sub('\s+', ' ', text).strip()
+    text = re.sub('\\s+', ' ', text).strip()
     return text
 
 def removing_urls(text):
     """Remove URLs from the text."""
-    url_pattern = re.compile(r'https?://\S+|www\.\S+')
+    url_pattern = re.compile(r'https?://\\S+|www\.\\S+')
     return url_pattern.sub(r'', text)
 
 def remove_small_sentences(df):
