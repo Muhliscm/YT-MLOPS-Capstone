@@ -4,31 +4,11 @@ from http import client
 import os
 from dvc import log
 import mlflow
-from src.constants import DAGS_HUB_TRACKING_URI, DAGS_HUB_REPO_NAME, DAGS_HUB_REPO_OWNER_NAME,DAGS_HUB_TOKEN
-import dagshub
 from src.logger import logging
+from src.utils.mlflow import setup_mlflow_tracking
 
 def promote_model():
-    logging.info("Starting model promotion process...")
-    # Set up DagsHub credentials for MLflow tracking
-
-        # Below code block is for local use
-    # -------------------------------------------------------------------------------------
-    # mlflow.set_tracking_uri(DAGS_HUB_TRACKING_URI)
-    # dagshub.init(repo_owner=DAGS_HUB_REPO_OWNER_NAME, repo_name=DAGS_HUB_REPO_NAME, mlflow=True)
-    # -------------------------------------------------------------------------------------
-
-    # Below code block is for production use    
-    if not DAGS_HUB_TOKEN:
-        raise EnvironmentError("CAPSTONE_TEST environment variable is not set")
-
-    os.environ["MLFLOW_TRACKING_USERNAME"] = DAGS_HUB_TOKEN
-    os.environ["MLFLOW_TRACKING_PASSWORD"] = DAGS_HUB_TOKEN
-
-    # Set up MLflow tracking URI
-
-    mlflow.set_tracking_uri(f'{DAGS_HUB_TRACKING_URI}/{DAGS_HUB_REPO_OWNER_NAME}/{DAGS_HUB_REPO_NAME}.mlflow')
-# -------------------------------------------------------------------------------------
+    setup_mlflow_tracking()
  
     model_name = "my_model"
     client = mlflow.MlflowClient()
