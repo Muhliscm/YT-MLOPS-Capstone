@@ -23,7 +23,7 @@ os.environ["MLFLOW_TRACKING_USERNAME"] = DAGS_HUB_TOKEN
 os.environ["MLFLOW_TRACKING_PASSWORD"] = DAGS_HUB_TOKEN
 
 # Set up MLflow tracking URI
-mlflow.set_tracking_uri(f'{DAGS_HUB_TRACKING_URI}/{DAGS_HUB_REPO_OWNER_NAME}/{DAGS_HUB_REPO_NAME}.mlflow')
+mlflow.set_tracking_uri(f'https://dagshub.com/{DAGS_HUB_REPO_OWNER_NAME}/{DAGS_HUB_REPO_NAME}.mlflow')
 # -------------------------------------------------------------------------------------
 
 

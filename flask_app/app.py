@@ -12,6 +12,7 @@ import re
 import dagshub
 from src.constants import DAGS_HUB_TRACKING_URI, DAGS_HUB_REPO_NAME, DAGS_HUB_REPO_OWNER_NAME,DAGS_HUB_TOKEN
 import numpy as np
+from src.logger import logging
 
 import warnings
 warnings.simplefilter("ignore", UserWarning)
@@ -84,9 +85,9 @@ if not DAGS_HUB_TOKEN:
 os.environ["MLFLOW_TRACKING_USERNAME"] = DAGS_HUB_TOKEN
 os.environ["MLFLOW_TRACKING_PASSWORD"] = DAGS_HUB_TOKEN
 
-# Set up MLflow tracking URI
+# # Set up MLflow tracking URI
 
-mlflow.set_tracking_uri(f'{DAGS_HUB_TRACKING_URI}/{DAGS_HUB_REPO_OWNER_NAME}/{DAGS_HUB_REPO_NAME}.mlflow')
+mlflow.set_tracking_uri(f'https://dagshub.com/{DAGS_HUB_REPO_OWNER_NAME}/{DAGS_HUB_REPO_NAME}.mlflow')
 # -------------------------------------------------------------------------------------
 
 
@@ -112,15 +113,30 @@ PREDICTION_COUNT = Counter(
 # ------------------------------------------------------------------------------------------
 # Model and vectorizer setup
 model_name = "my_model"
+# def get_latest_model_version(model_name):
+#     client = mlflow.MlflowClient()
+#     print(f"Fetching latest model version for model: {model_name}")
+#     latest_version = client.get_latest_versions(model_name, stages=["Production"])
+#     if not latest_version:
+#         latest_version = client.get_latest_versions(model_name, stages=["None"])
+#     return latest_version[0].version if latest_version else None
+
 def get_latest_model_version(model_name):
     client = mlflow.MlflowClient()
-    latest_version = client.get_latest_versions(model_name, stages=["Production"])
-    if not latest_version:
-        latest_version = client.get_latest_versions(model_name, stages=["None"])
-    return latest_version[0].version if latest_version else None
+    try:
+        # Try alias first (MLflow 3.x preferred way)
+        version = client.get_model_version_by_alias(model_name, "production")
+        print(version)
+        return version.version
+    except Exception:
+        # Fall back to latest by version number
+        versions = client.search_model_versions(f"name='{model_name}'")
+
+        latest = max(versions, key=lambda v: int(v.version))
+        return latest.version
 
 model_version = get_latest_model_version(model_name)
-model_uri = f'models:/{model_name}/{model_version}'
+model_uri = f"models:/{model_name}@production"
 print(f"Fetching model from: {model_uri}")
 model = mlflow.pyfunc.load_model(model_uri)
 vectorizer = pickle.load(open('models/vectorizer.pkl', 'rb'))
