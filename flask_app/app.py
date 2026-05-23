@@ -113,27 +113,27 @@ PREDICTION_COUNT = Counter(
 # ------------------------------------------------------------------------------------------
 # Model and vectorizer setup
 model_name = "my_model"
-# def get_latest_model_version(model_name):
-#     client = mlflow.MlflowClient()
-#     print(f"Fetching latest model version for model: {model_name}")
-#     latest_version = client.get_latest_versions(model_name, stages=["Production"])
-#     if not latest_version:
-#         latest_version = client.get_latest_versions(model_name, stages=["None"])
-#     return latest_version[0].version if latest_version else None
-
 def get_latest_model_version(model_name):
     client = mlflow.MlflowClient()
-    try:
-        # Try alias first (MLflow 3.x preferred way)
-        version = client.get_model_version_by_alias(model_name, "production")
-        print(version)
-        return version.version
-    except Exception:
-        # Fall back to latest by version number
-        versions = client.search_model_versions(f"name='{model_name}'")
+    print(f"Fetching latest model version for model: {model_name}")
+    latest_version = client.get_latest_versions(model_name, stages=["Production"])
+    if not latest_version:
+        latest_version = client.get_latest_versions(model_name, stages=["None"])
+    return latest_version[0].version if latest_version else None
 
-        latest = max(versions, key=lambda v: int(v.version))
-        return latest.version
+# def get_latest_model_version(model_name):
+#     client = mlflow.MlflowClient()
+#     try:
+#         # Try alias first (MLflow 3.x preferred way)
+#         version = client.get_model_version_by_alias(model_name, "production")
+#         print(version)
+#         return version.version
+#     except Exception:
+#         # Fall back to latest by version number
+#         versions = client.search_model_versions(f"name='{model_name}'")
+
+#         latest = max(versions, key=lambda v: int(v.version))
+#         return latest.version
 
 model_version = get_latest_model_version(model_name)
 model_uri = f"models:/{model_name}@production"

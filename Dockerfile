@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.14-slim
 
 WORKDIR /app
 
@@ -11,6 +11,8 @@ COPY src/ /app/src/
 COPY models/ /app/models/
 
 ENV PYTHONPATH=/app
+
+RUN python -m nltk.downloader stopwords wordnet
 
 EXPOSE 5000
 
