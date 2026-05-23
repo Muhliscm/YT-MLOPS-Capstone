@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+load_dotenv(override=False)
 
 # dags hub repo details
 DAGS_HUB_TRACKING_URI = os.getenv("DAGS_HUB_TRACKING_URI")

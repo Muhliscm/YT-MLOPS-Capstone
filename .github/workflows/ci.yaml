@@ -30,12 +30,16 @@ jobs:
       - name: run pipeline
         env:
           CAPSTONE_TEST: ${{ secrets.CAPSTONE_TEST }}
+          DAGS_HUB_REPO_OWNER_NAME: ${{ secrets.DAGS_HUB_REPO_OWNER_NAME }}
+          DAGS_HUB_REPO_NAME: ${{ secrets.DAGS_HUB_REPO_NAME }}
         run: |
           dvc repro
 
       - name: Run model tests
         env:
           CAPSTONE_TEST: ${{ secrets.CAPSTONE_TEST }}
+          DAGS_HUB_REPO_OWNER_NAME: ${{ secrets.DAGS_HUB_REPO_OWNER_NAME }}
+          DAGS_HUB_REPO_NAME: ${{ secrets.DAGS_HUB_REPO_NAME }}
         run: |
           python -m unittest tests/test_model.py
 
@@ -43,12 +47,16 @@ jobs:
         if: success()
         env:
           CAPSTONE_TEST: ${{ secrets.CAPSTONE_TEST }}
+          DAGS_HUB_REPO_OWNER_NAME: ${{ secrets.DAGS_HUB_REPO_OWNER_NAME }}
+          DAGS_HUB_REPO_NAME: ${{ secrets.DAGS_HUB_REPO_NAME }}
         run: python scripts/promote_model.py
 
       - name: Run Flask app tests
         if: success()
         env:
           CAPSTONE_TEST: ${{ secrets.CAPSTONE_TEST }}
+          DAGS_HUB_REPO_OWNER_NAME: ${{ secrets.DAGS_HUB_REPO_OWNER_NAME }}
+          DAGS_HUB_REPO_NAME: ${{ secrets.DAGS_HUB_REPO_NAME }}
         run: python -m unittest tests/test_flask_app.py
       
       - name: Login to AWS ECR
