@@ -10,7 +10,7 @@ import dagshub
 import warnings
 warnings.simplefilter("ignore", UserWarning)
 warnings.filterwarnings("ignore")
-from src.constants import DAGS_HUB_TRACKING_URI, DAGS_HUB_REPO_NAME, DAGS_HUB_REPO_OWNER_NAME,DAGS_HUB_TOKEN
+from src.constants import DAGS_HUB_REPO_NAME, DAGS_HUB_REPO_OWNER_NAME,DAGS_HUB_TOKEN
 
 
 # Below code block is for production use
@@ -18,6 +18,13 @@ from src.constants import DAGS_HUB_TRACKING_URI, DAGS_HUB_REPO_NAME, DAGS_HUB_RE
 # Set up DagsHub credentials for MLflow tracking
 if not DAGS_HUB_TOKEN:
     raise EnvironmentError("CAPSTONE_TEST environment variable is not set")
+
+if not DAGS_HUB_REPO_OWNER_NAME:
+    raise EnvironmentError("DAGS_HUB_REPO_OWNER_NAME environment variable is not set")
+
+if not DAGS_HUB_REPO_NAME:
+    raise EnvironmentError("DAGS_HUB_REPO_NAME environment variable is not set")
+
 
 os.environ["MLFLOW_TRACKING_USERNAME"] = DAGS_HUB_TOKEN
 os.environ["MLFLOW_TRACKING_PASSWORD"] = DAGS_HUB_TOKEN
