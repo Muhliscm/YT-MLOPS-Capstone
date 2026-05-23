@@ -6,41 +6,11 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_a
 import logging
 import mlflow
 import mlflow.sklearn
-import dagshub
 import os
 from src.logger import logging
-from src.constants import DAGS_HUB_REPO_NAME, DAGS_HUB_REPO_OWNER_NAME,DAGS_HUB_TOKEN
+from src.utils.mlflow import setup_mlflow_tracking
 
-
-
-# Below code block is for production use
-# -------------------------------------------------------------------------------------
-# Set up DagsHub credentials for MLflow tracking
-
-if not DAGS_HUB_TOKEN:
-    raise EnvironmentError("CAPSTONE_TEST environment variable is not set")
-
-if not DAGS_HUB_REPO_OWNER_NAME:
-    raise EnvironmentError("DAGS_HUB_REPO_OWNER_NAME environment variable is not set")
-
-if not DAGS_HUB_REPO_NAME:
-    raise EnvironmentError("DAGS_HUB_REPO_NAME environment variable is not set")
-
-os.environ["MLFLOW_TRACKING_USERNAME"] = DAGS_HUB_TOKEN
-os.environ["MLFLOW_TRACKING_PASSWORD"] = DAGS_HUB_TOKEN
-
-logging.info("DagsHub credentials set for MLflow tracking.")
-logging.info("MLflow tracking URI set to: %s", f'https://dagshub.com/{DAGS_HUB_REPO_OWNER_NAME}/{DAGS_HUB_REPO_NAME}.mlflow')
-# Set up MLflow tracking URI
-mlflow.set_tracking_uri(f'https://dagshub.com/{DAGS_HUB_REPO_OWNER_NAME}/{DAGS_HUB_REPO_NAME}.mlflow')
-# -------------------------------------------------------------------------------------
-
-# Below code block is for local use
-# -------------------------------------------------------------------------------------
-# mlflow.set_tracking_uri(DAGS_HUB_TRACKING_URI)
-# dagshub.init(repo_owner=DAGS_HUB_REPO_OWNER_NAME, repo_name=DAGS_HUB_REPO_NAME, mlflow=True)
-# -------------------------------------------------------------------------------------
-
+setup_mlflow_tracking()
 
 def load_model(file_path: str):
     """Load the trained model from a file."""

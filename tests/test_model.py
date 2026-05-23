@@ -6,22 +6,13 @@ import os
 import pandas as pd
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 import pickle
-from src.constants import DAGS_HUB_REPO_NAME, DAGS_HUB_REPO_OWNER_NAME,DAGS_HUB_TOKEN
+from src.utils.mlflow import setup_mlflow_tracking
 
 class TestModelLoading(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        # Set up DagsHub credentials for MLflow tracking
-        
-        if not DAGS_HUB_TOKEN:
-            raise EnvironmentError("CAPSTONE_TEST environment variable is not set")
-
-        os.environ["MLFLOW_TRACKING_USERNAME"] = DAGS_HUB_TOKEN
-        os.environ["MLFLOW_TRACKING_PASSWORD"] = DAGS_HUB_TOKEN
-
-        # Set up MLflow tracking URI
-        mlflow.set_tracking_uri(f'https://dagshub.com/{DAGS_HUB_REPO_OWNER_NAME}/{DAGS_HUB_REPO_NAME}.mlflow')
+        setup_mlflow_tracking()
 
         # Load the new model from MLflow model registry
         cls.new_model_name = "my_model"
