@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 import mlflow
 import pickle
-import os
 import pandas as pd
 from prometheus_client import Counter, Histogram, generate_latest, CollectorRegistry, CONTENT_TYPE_LATEST
 import time
@@ -9,14 +8,15 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 import string
 import re
-# import dagshub
-from src.constants import DAGS_HUB_TRACKING_URI, DAGS_HUB_REPO_NAME, DAGS_HUB_REPO_OWNER_NAME,DAGS_HUB_TOKEN
+from src.utils.mlflow import setup_mlflow_tracking
+
 import numpy as np
-from src.logger import logging
 
 import warnings
 warnings.simplefilter("ignore", UserWarning)
 warnings.filterwarnings("ignore")
+
+setup_mlflow_tracking()
 
 def lemmatization(text):
     """Lemmatize the text."""
@@ -70,24 +70,7 @@ def normalize_text(text):
 
     return text
 
-# Below code block is for local use
-# -------------------------------------------------------------------------------------
-# mlflow.set_tracking_uri(DAGS_HUB_TRACKING_URI)
-# dagshub.init(repo_owner=DAGS_HUB_REPO_OWNER_NAME, repo_name=DAGS_HUB_REPO_NAME, mlflow=True)
-# -------------------------------------------------------------------------------------
 
-# Below code block is for production use
-# -------------------------------------------------------------------------------------
-# Set up DagsHub credentials for MLflow tracking
-if not DAGS_HUB_TOKEN:
-    raise EnvironmentError("CAPSTONE_TEST environment variable is not set")
-
-os.environ["MLFLOW_TRACKING_USERNAME"] = DAGS_HUB_TOKEN
-os.environ["MLFLOW_TRACKING_PASSWORD"] = DAGS_HUB_TOKEN
-
-# # Set up MLflow tracking URI
-
-mlflow.set_tracking_uri(f'https://dagshub.com/{DAGS_HUB_REPO_OWNER_NAME}/{DAGS_HUB_REPO_NAME}.mlflow')
 # -------------------------------------------------------------------------------------
 
 
