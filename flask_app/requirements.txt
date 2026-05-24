@@ -4,5 +4,6 @@ nltk==3.9.4
 numpy==2.4.6
 pandas==2.3.3
 prometheus_client==0.25.0
-dagshub==0.7.0
+# dagshub==0.7.0
 scikit-learn==1.8.0
+gunicorn==25.3.0
