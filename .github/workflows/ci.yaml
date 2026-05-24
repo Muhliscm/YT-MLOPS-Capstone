@@ -98,7 +98,6 @@ jobs:
           --from-literal=CAPSTONE_TEST=${{ secrets.CAPSTONE_TEST }} \
           --from-literal=DAGS_HUB_REPO_OWNER_NAME=${{ secrets.DAGS_HUB_REPO_OWNER_NAME }} \
           --from-literal=DAGS_HUB_REPO_NAME=${{ secrets.DAGS_HUB_REPO_NAME }} \
-          --from-literal=DAGS_HUB_TRACKING_URI=${{ secrets.DAGS_HUB_TRACKING_URI }} \
           --dry-run=client -o yaml | kubectl apply -f -
 
       - name: Deploy to EKS

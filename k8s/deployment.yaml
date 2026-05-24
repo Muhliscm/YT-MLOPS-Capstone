@@ -32,6 +32,16 @@ spec:
             secretKeyRef:
               name: capstone-secret
               key: CAPSTONE_TEST
+        - name: DAGS_HUB_REPO_OWNER_NAME
+          valueFrom:
+            secretKeyRef:
+              name: capstone-secret
+              key: DAGS_HUB_REPO_OWNER_NAME
+        - name: DAGS_HUB_REPO_NAME
+          valueFrom:
+            secretKeyRef:
+              name: capstone-secret
+              key: DAGS_HUB_REPO_NAME
 
 ---
 apiVersion: v1
